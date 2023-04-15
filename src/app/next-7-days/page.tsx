@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { formatDateTime, formatNumber } from "@this/utils/formats";
-import { ApiV1CurrentGetResponse } from "@this/types";
+import { ApiV1Next7DaysGetResponse } from "@this/types";
 import Header from "@this/components/Header";
 import LoadingPage from "./loading";
-import { getCurrentWeather } from "@this/data/getCurrentWeather";
 import { notFound } from "next/navigation";
+import { getNext7DaysWeather } from "@this/data/getNext7DaysWeather";
 
 export default function Home() {
   const [currentWeather, setCurrentWeather] =
-    useState<ApiV1CurrentGetResponse>();
+    useState<ApiV1Next7DaysGetResponse>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function Home() {
 
       navigator.geolocation.getCurrentPosition(
         async function success(position) {
-          const currentWeather = await getCurrentWeather(
+          const currentWeather = await getNext7DaysWeather(
             {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,

@@ -2,22 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { formatDateTime, formatNumber, formatTime } from "@this/utils/formats";
-import { ApiV1CurrentGetResponse } from "@this/types";
+import { ApiV1TomorrowGetResponse } from "@this/types";
 import Header from "@this/components/Header";
 import LoadingPage from "./loading";
-import { getCurrentWeather } from "@this/data/getCurrentWeather";
 import { notFound } from "next/navigation";
-
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-tomorrow.setHours(0);
-tomorrow.setMinutes(0);
-tomorrow.setSeconds(0);
-tomorrow.setMilliseconds(0);
+import { getTomorrowWeather } from "@this/data/getTomorrowWeather";
 
 export default function Home() {
   const [currentWeather, setCurrentWeather] =
-    useState<ApiV1CurrentGetResponse>();
+    useState<ApiV1TomorrowGetResponse>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +21,14 @@ export default function Home() {
 
       navigator.geolocation.getCurrentPosition(
         async function success(position) {
-          const currentWeather = await getCurrentWeather(
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          tomorrow.setHours(0);
+          tomorrow.setMinutes(0);
+          tomorrow.setSeconds(0);
+          tomorrow.setMilliseconds(0);
+
+          const currentWeather = await getTomorrowWeather(
             {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8 h-full">
       <Header
-        title={formatDateTime(tomorrow, {
+        title={formatDateTime(currentWeather.localTime, {
           weekday: "long",
         })}
         description={`Weather in ${currentWeather.location} for tomorrow.`}

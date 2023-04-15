@@ -30,6 +30,7 @@ export default function HomePage() {
             {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
+              from: new Date().toISOString(),
             },
             currentWeatherAbortController.signal
           ).catch(() => undefined);
