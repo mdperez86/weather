@@ -7,6 +7,11 @@ import "./globals.css";
 export const metadata = {
   title: "Weather",
   description: "Local weather information",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/weather.svg",
+  },
+  themeColor: "#317EFB",
 };
 
 export default function RootLayout({
@@ -22,6 +27,8 @@ export default function RootLayout({
             {children}
           </main>
         </div>
+
+        <script src="/sw.js" async />
       </body>
     </html>
   );
